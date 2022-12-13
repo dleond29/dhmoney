@@ -1,0 +1,1272 @@
+{
+	"info": {
+		"_postman_id": "940baef8-b5b0-4cc1-ab5e-431ea1ab8368",
+		"name": "Proyecto Back",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16607781"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "REGISTER",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El método es de tipo POST\", () => {\r",
+									"    pm.expect(request.method).eql(\"POST\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La URL de la petición es la esperada\", () => {\r",
+									"    pm.expect(request.url).eql(\"http://localhost:8080/api/users\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Existe la propiedad Content-Type en el encabezado de la petición y es igual a 'application/json'\", () => {\r",
+									"    pm.expect(request.headers).to.have.property(\"content-type\");\r",
+									"    pm.expect(request.headers['content-type']).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Existe la propiedad Content-Type en el encabezado de la respuesta y es igual a 'application/json; charset=utf-8'\", () => {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Tiempo de respuesta menor a 200 ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(20000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status igual a '200 OK'\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"\r",
+									"const dataReq = JSON.parse(request.data);\r",
+									"\r",
+									"pm.test(\"Petición con los atributos esperados\", function () {\r",
+									"   \r",
+									"    pm.expect(dataReq).to.have.all.keys([\"name\",\"last_name\",\"dni\", \"phone\", \"email\",\"password\"]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tipos de datos de la petición\", () => {\r",
+									"    pm.expect(dataReq).to.be.an(\"object\");\r",
+									"    pm.expect(dataReq.name).to.be.a(\"string\");\r",
+									"    pm.expect(dataReq.last_name).to.be.a(\"string\");\r",
+									"    pm.expect(dataReq.dni).to.be.a(\"number\");\r",
+									"    pm.expect(dataReq.phone).to.be.a(\"number\");\r",
+									"    pm.expect(dataReq.email).to.be.a(\"string\");\r",
+									"    pm.expect(dataReq.password).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta es correcta, tiene body y es un JSON\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");  // Es otra forma de chequear las keys del JSON\r",
+									"});\r",
+									"\r",
+									"const dataRes = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Body de la respuesta no vacío\", function () {\r",
+									"    pm.expect(dataRes).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Respuesta con los atributos esperados\", function () {\r",
+									"    pm.expect(dataRes).to.have.all.keys([\"id\",\"name\",\"last_name\",\"dni\", \"phone\", \"email\",\"cvu\", \"alias\"]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tipos de datos de la respuesta\", () => {\r",
+									"    pm.expect(dataRes).to.be.an(\"object\");\r",
+									"    pm.expect(dataRes.id).to.be.a(\"number\");\r",
+									"    pm.expect(dataRes.name).to.be.a(\"string\");\r",
+									"    pm.expect(dataRes.last_name).to.be.a(\"string\");\r",
+									"    pm.expect(dataRes.dni).to.be.a(\"number\");\r",
+									"    pm.expect(dataRes.phone).to.be.a(\"number\");\r",
+									"    pm.expect(dataRes.email).to.be.a(\"string\");\r",
+									"    \r",
+									"    pm.expect(dataRes.cvu).to.be.a(\"string\");\r",
+									"    pm.expect(dataRes.alias).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El ID obtenido es un número válido mayor a 0\", function () {\r",
+									"    pm.expect(dataRes.id).to.not.be.NaN;\r",
+									"    pm.expect(dataRes.id).to.be.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Los datos recibidos son iguales a los enviados\", function () {\r",
+									"    pm.expect(dataReq.name).to.eql(dataRes.name);\r",
+									"    pm.expect(dataReq.last_name).to.eql(dataRes.last_name);\r",
+									"    pm.expect(dataReq.DNI).to.eql(dataRes.DNI);\r",
+									"    pm.expect(dataReq.Phone).to.eql(dataRes.Phone);\r",
+									"    pm.expect(dataReq.CVU).to.eql(dataRes.CVU);\r",
+									"    pm.expect(dataReq.Alias).to.eql(dataRes.Alias);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"faker\",\r\n    \"last_name\": \"faker\",\r\n    \"dni\": 43629880,\r\n    \"phone\": 1231232,\r\n    \"email\": \"faker@gmail.com\",\r\n    \"password\": \"chamfle\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOGIN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El método es de tipo POST\", () => {\r",
+									"    pm.expect(request.method).eql(\"POST\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La URL de la petición es la esperada\", () => {\r",
+									"    pm.expect(request.url).eql(\"http://localhost:8080/api/login\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Existe la propiedad Content-Type en el encabezado de la petición y es igual a 'application/json'\", () => {\r",
+									"    pm.expect(request.headers).to.have.property(\"content-type\");\r",
+									"    pm.expect(request.headers['content-type']).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Existe la propiedad Content-Type en el encabezado de la respuesta y es igual a 'application/json; charset=utf-8'\", () => {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tiempo de respuesta menor a 200 ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status igual a '200 Ok'\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"\r",
+									"const dataReq = JSON.parse(request.data);\r",
+									"\r",
+									"pm.test(\"Petición con los atributos esperados\", function () {\r",
+									"    pm.expect(dataReq).to.not.have.any.keys(\"id\");\r",
+									"    pm.expect(dataReq).to.have.all.keys([\"email\", \"password\"]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tipos de datos de la petición\", () => {\r",
+									"    pm.expect(dataReq).to.be.an(\"object\");\r",
+									"    pm.expect(dataReq).to.not.have.property(\"id\");\r",
+									"    pm.expect(dataReq.email).to.be.a(\"string\");\r",
+									"    pm.expect(dataReq.password).to.be.a(\"string\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta es correcta, tiene body y es un JSON\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");  // Es otra forma de chequear las keys del JSON\r",
+									"});\r",
+									"\r",
+									"const dataRes = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Body de la respuesta no vacío\", function () {\r",
+									"    pm.expect(dataRes).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Respuesta con los atributos esperados\", function () {\r",
+									"    pm.expect(dataRes).to.have.all.keys(\"token\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tipos de datos de la respuesta\", () => {\r",
+									"    pm.expect(dataRes).to.be.an(\"object\");\r",
+									"    pm.expect(dataRes.token).to.be.a(\"string\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "FtR40ZpL20njEBySw3hFtg6yuAj8f1pc",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "localhost:8080/forgot",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "http://localhost:8086/realms/realm-test/protocol/openid-connect/token",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "client-test",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "http://localhost:8086/realms/realm-test/protocol/openid-connect/auth",
+									"type": "string"
+								},
+								{
+									"key": "useBrowser",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "tokenName",
+									"value": "toki toki",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJLdGJ1dTZtazZLaV9ObTEwaWNyNDZTM2FoSUwxZTJWQmhfWHFQVFdQaWtJIn0.eyJleHAiOjE2NjY3MjQzMjYsImlhdCI6MTY2NjcyNDAyNiwiYXV0aF90aW1lIjoxNjY2NzIyOTAxLCJqdGkiOiI3MzRjYWUwZS05MWE5LTQ5NWEtYjcxOC04YWQ3OGQ2NzFiZmUiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODYvcmVhbG1zL3JlYWxtLXRlc3QiLCJhdWQiOiJyZWFsbS1tYW5hZ2VtZW50Iiwic3ViIjoiYTVkMTI1ZjEtNTBlMy00NTViLWIwNDktM2FkMmVjM2Y0ZmQ3IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2xpZW50LXRlc3QiLCJzZXNzaW9uX3N0YXRlIjoiMTIyYzAxMzYtNDliMS00MTQ1LTliMmYtZTQ0NWE0NWM5NjBiIiwiYWNyIjoiMCIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJhZG1pbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InJlYWxtLW1hbmFnZW1lbnQiOnsicm9sZXMiOlsibWFuYWdlLXVzZXJzIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwic2lkIjoiMTIyYzAxMzYtNDliMS00MTQ1LTliMmYtZTQ0NWE0NWM5NjBiIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJwZXBpdG8gcGVwZSIsInByZWZlcnJlZF91c2VybmFtZSI6InBlcGl0b0BnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoicGVwaXRvIiwiZmFtaWx5X25hbWUiOiJwZXBlIiwiZW1haWwiOiJwZXBpdG9AZ21haWwuY29tIn0.GH22-XIm3Rf8CT4axCJqmZQoak4AG--Yb516ZIPHtB_goo_K1iGrUjLLLY2oQjm_SumGwiOzFE-3QGcCYP6qAVpuIcpFrddar55aquFVa3G_Y3eqxuKrbBF8E8nq3izvGcOg0q0qKElHsUcEz5soOefCpgSe0JjhJ-iMuh3I5p8ny_XRLL1Cp5EqPxalue80kqvxILt_s3UAkzkSZKh4LTM6N4tMTrD7cQR4zHioB6HgbtCJXToQv5TnU1HVJl45gxvAfqsfztd6oDxW9vVpGGSPQHZPVVzKUtZ2fJXc8schTw_Z171Oin5DgDcsPNJ90Hq_7tgo_wOYP9cTaBUfFA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"chamfle9@gmail.com\",\r\n    \"password\": \"chamfle\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOGOUT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El método es de tipo POST\", () => {\r",
+									"    pm.expect(request.method).eql(\"POST\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La URL de la petición es la esperada\", () => {\r",
+									"    pm.expect(request.url).eql(\"http://localhost:8080/api/logout\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Existe la propiedad Content-Type en el encabezado de la respuesta y es igual a 'application/json; charset=utf-8'\", () => {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El token enviado en el header no esta vacio\", () => {\r",
+									"    pm.request.to.have.header(\"Authorization\");\r",
+									"    pm.expect(pm.request.headers.get('Authorization')).not.to.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tiempo de respuesta menor a 200 ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status igual a '200 Ok'\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"\r",
+									"// const dataReq = JSON.parse(request.data);\r",
+									"\r",
+									"// pm.test(\"El body de la petición esta vacio \", function () {\r",
+									"//     pm.expect(dataReq).to.be.empty\r",
+									"// });\r",
+									"\r",
+									"pm.test(\"La respuesta es correcta, tiene body y es un JSON\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");  // Es otra forma de chequear las keys del JSON\r",
+									"});\r",
+									"\r",
+									"const dataRes = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Body de la respuesta vacío\", function () {\r",
+									"    pm.expect(dataRes).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tipos de datos de la respuesta\", () => {\r",
+									"    pm.expect(dataRes).to.be.a(\"string\");\r",
+									"\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwYjA1NGY5NS0wMzFkLTRkZmItYmRjYy00MjA0YTk0Zjk0ODUifQ.eyJleHAiOjE2NjY4MjYxMjEsImlhdCI6MTY2NjgyNDMyMSwianRpIjoiOTMyYmMwMTktMzA0MS00NzE0LTgzYmItNzYwMDI2MWMzMDM1IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDg2L3JlYWxtcy9yZWFsbS10ZXN0IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDg2L3JlYWxtcy9yZWFsbS10ZXN0Iiwic3ViIjoiOTE5Yjk1MGQtOTNkNC00MDVkLWIyMWYtYjMzMTY5OWQ1NGM4IiwidHlwIjoiUmVmcmVzaCIsImF6cCI6ImNsaWVudC10ZXN0Iiwic2Vzc2lvbl9zdGF0ZSI6IjM5Nzc4MTI5LWY5NDUtNDRiZC04MTJhLWIyY2IwMDlmMjdmZCIsInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6IjM5Nzc4MTI5LWY5NDUtNDRiZC04MTJhLWIyY2IwMDlmMjdmZCJ9.zEMvWo3ZylXy4tDdbkiaGo9EPbABOQY-IY6-h3HzxFw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/users/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FORGOT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El método es de tipo POST\", () => {\r",
+									"    pm.expect(request.method).eql(\"POST\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La URL de la petición es la esperada\", () => {\r",
+									"    pm.expect(request.url).eql(\"http://localhost:8080/api/forgot\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Existe la propiedad Content-Type en el encabezado de la petición y es igual a 'application/json'\", () => {\r",
+									"    pm.expect(request.headers).to.have.property(\"content-type\");\r",
+									"    pm.expect(request.headers['content-type']).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Existe la propiedad Content-Type en el encabezado de la respuesta y es igual a 'application/json; charset=utf-8'\", () => {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tiempo de respuesta menor a 200 ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status igual a '200 Ok'\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"\r",
+									"const dataReq = JSON.parse(request.data);\r",
+									"\r",
+									"pm.test(\"Petición con los atributos esperados\", function () {\r",
+									"    pm.expect(dataReq).to.not.have.any.keys(\"id\");\r",
+									"    pm.expect(dataReq).to.have.all.keys([\"email\"]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tipos de datos de la petición\", () => {\r",
+									"    pm.expect(dataReq).to.be.an(\"object\");\r",
+									"    pm.expect(dataReq).to.not.have.property(\"id\");\r",
+									"    pm.expect(dataReq.email).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta es correcta, tiene body y es un JSON\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");  // Es otra forma de chequear las keys del JSON\r",
+									"});\r",
+									"\r",
+									"const dataRes = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Body de la respuesta no vacío\", function () {\r",
+									"    pm.expect(dataRes).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tipos de datos de la respuesta\", () => {\r",
+									"    pm.expect(dataRes).to.be.a(\"string\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"pepex@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/users/forgot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"forgot"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cards",
+			"item": [
+				{
+					"name": "ADD CARD",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El método es de tipo POST\", () => {\r",
+									"    pm.expect(request.method).eql(\"POST\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La URL de la petición es la esperada\", () => {\r",
+									"  pm.expect(request.url).to.have.string(\"http://localhost:8080/api/accounts\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Existe la propiedad Content-Type en el encabezado de la petición y es igual a 'application/json'\", () => {\r",
+									"    pm.expect(request.headers).to.have.property(\"content-type\");\r",
+									"    pm.expect(request.headers['content-type']).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Existe la propiedad Content-Type en el encabezado de la respuesta y es igual a 'application/json'\", () => {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tiempo de respuesta menor a 200 ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status igual a '200 OK'\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"\r",
+									"const dataReq = JSON.parse(request.data);\r",
+									"\r",
+									"pm.test(\"Petición con los atributos esperados\", function () {\r",
+									"    pm.expect(dataReq).to.not.have.any.keys(\"id\");\r",
+									"    pm.expect(dataReq).to.have.all.keys([\"pan\", \"holder_name\", \"expiration_date\", \"cid\"]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tipos de datos de la petición\", () => {\r",
+									"    pm.expect(dataReq).to.be.an(\"object\");\r",
+									"    pm.expect(dataReq).to.not.have.property(\"id\");\r",
+									"    pm.expect(dataReq.pan).to.be.a(\"string\");\r",
+									"    pm.expect(dataReq.holder_name).to.be.a(\"string\");\r",
+									"    pm.expect(dataReq.expiration_date).to.be.a(\"string\");\r",
+									"    pm.expect(dataReq.cid).to.be.a(\"string\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Que el cid no sea mayor a 4 digitos\", function () {\r",
+									"    pm.expect(dataReq.cid).to.have.length.lessThan(5);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Que el cid no sea menor a 3 digitos\", function () {\r",
+									"    pm.expect(dataReq.cid).to.have.length.greaterThan(2);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Que el pan no sea mayor a 21 digitos\", function () {\r",
+									"   pm.expect(dataReq.pan).to.have.length.lessThan(21);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Que el pan no sea menor a 13 digitos\", function () {\r",
+									"   pm.expect(dataReq.pan).to.have.length.greaterThan(12);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"La respuesta es correcta, tiene body y es un JSON\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");  // Es otra forma de chequear las keys del JSON\r",
+									"});\r",
+									"\r",
+									"const dataRes = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Body de la respuesta no vacío\", function () {\r",
+									"    pm.expect(dataRes).to.not.be.empty;\r",
+									"});\r",
+									"pm.test(\"Tipos de datos de la respuesta\", () => {\r",
+									" \r",
+									"    pm.expect(dataRes).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mensaje con texto 'OK'\", function () {\r",
+									"    pm.expect(dataRes).to.have.string('OK');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1WHYzNzAzQVRlSTZycDN2Z2RYeVdzd2M3eEVTSi1QMU03RXlQZTc3UEprIn0.eyJleHAiOjE2Njc5NzUyMjUsImlhdCI6MTY2Nzk3MjIyNSwianRpIjoiYzhjOWFjYTQtOGRkMi00MGMzLThiZGUtNTQyMGMzNDQzMjIxIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDg2L3JlYWxtcy9yZWFsbS10ZXN0Iiwic3ViIjoiMjVlMzA4ODgtZmM4NS00Mzk5LTgyNDgtYjcwZTAxMTQyMTNmIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2xpZW50LXRlc3QiLCJzZXNzaW9uX3N0YXRlIjoiMDBhZmJkMjktNDk2Mi00YmMyLWJkOWQtNGU4Yjg4MjNiN2U3IiwiYWNyIjoiMSIsInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6IjAwYWZiZDI5LTQ5NjItNGJjMi1iZDlkLTRlOGI4ODIzYjdlNyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGVzMjM0aXRvIHBlc3BmZGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJjaGFtZmxlOUBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoicGVzMjM0aXRvIiwiZmFtaWx5X25hbWUiOiJwZXNwZmRlIiwiZW1haWwiOiJjaGFtZmxlOUBnbWFpbC5jb20ifQ.eWbQkRn62WKm9kj4TYfOXg-Gc8Z-yMirNvJzoE9hHrq0ek7hKKb9dWyc7b1Jj2xtK0ohYixQ7OLh7bz2NyCLYcvCO_uzbZ_dgkM0C87T7ntBp0lY1pxumF7Yf9BZLfWSyLtx9kTUeVsvA3P3jsEV7vRG-D_4R7pDYfBeo7tbWEvWcGih2WtE4D1lAgIZKolekyxODfdTeZxkd_iAybN-vAoQ5jTaPHjsHZoCMRAhSn3UgWM9reuGZ6MaztOHC3wK0bviO-xsUD80QR3sGPhg3V1-_36fUwJB06lMmDwhGf3virt5T0rskYv5XqHuW3KNxXuX7rB0hbp0y25cfhIEXA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pan\": \"0000000000918s0\",\r\n    \"holder_name\": \"pepito\",\r\n    \"expiration_date\": \"2022-01-02T15:04:05Z\",\r\n    \"cid\": \"1217\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/accounts/1/cards",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"accounts",
+								"1",
+								"cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET BY USER ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El método es de tipo GET\", () => {\r",
+									"    pm.expect(request.method).eql(\"GET\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La URL de la petición es la esperada\", () => {\r",
+									"    pm.expect(request.url).to.have.string(\"http://localhost:8080/api/accounts/\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Existe la propiedad Content-Type en el encabezado de la respuesta y es igual a 'application/json'\", () => {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tiempo de respuesta menor a 200 ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status igual a '200 OK'\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body de la petición vacío\", function () {\r",
+									"    pm.expect(request.data).to.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta es correcta, tiene body y es un JSON\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");  // Es otra forma de chequear las keys del JSON\r",
+									"});\r",
+									"\r",
+									"const dataRes = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Body de la respuesta no vacío\", function () {\r",
+									"    pm.expect(dataRes).to.not.be.empty;\r",
+									"});\r",
+									"pm.test(\"Respuesta es un array\", function () {\r",
+									"    pm.expect(dataRes).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Que la cuenta contenga al menos una tarjeta\", function () {\r",
+									"    pm.expect(dataRes).to.have.lengthOf.at.least(1);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Elementos del array con los atributos esperados\", function () {\r",
+									"    for(let i = 0; i < dataRes.length; i++) {\r",
+									"          pm.expect(dataRes[i]).to.have.all.keys([\"ID\",\"User\", \"PAN\", \"HolderName\", \"ExpirationDate\", \"CID\"]);\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tipos de datos de las tarjetas son los esperados\", () => {\r",
+									"    for(let i = 0; i < dataRes.length; i++) {\r",
+									"    pm.expect(dataRes[i]).to.be.an(\"object\");\r",
+									"    pm.expect(dataRes[i].ID).to.be.a(\"number\");\r",
+									"    pm.expect(dataRes[i].User).to.be.a(\"object\");\r",
+									"    pm.expect(dataRes[i].PAN).to.be.a(\"string\");\r",
+									"    pm.expect(dataRes[i].HolderName).to.be.a(\"string\");\r",
+									"    pm.expect(dataRes[i].ExpirationDate).to.be.a(\"string\");\r",
+									"    pm.expect(dataRes[i].CID).to.be.a(\"string\");\r",
+									" \r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Los ID's obtenidos son números válidos mayores a 0\", function () {\r",
+									"    for(let i = 0; i < dataRes.length; i++) {\r",
+									"        pm.expect(dataRes[i].ID).to.not.be.NaN;\r",
+									"        pm.expect(dataRes[i].ID).to.be.above(0);\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Las tarjetas no son nulas, sus ID's no son nulos y los ID's son un número válido mayor a 0\", function () {\r",
+									"    for(let i = 0; i < dataRes.length; i++) {\r",
+									"        pm.expect(dataRes[i]).to.not.be.null;\r",
+									"        pm.expect(dataRes[i].ID).to.not.be.null;\r",
+									"        pm.expect(dataRes[i].ID).to.not.be.NaN;\r",
+									"        pm.expect(dataRes[i].ID).to.be.above(0);\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1WHYzNzAzQVRlSTZycDN2Z2RYeVdzd2M3eEVTSi1QMU03RXlQZTc3UEprIn0.eyJleHAiOjE2Njc5NzgyNjUsImlhdCI6MTY2Nzk3NTI2NSwianRpIjoiZTcyMTdjMGItMTcwMC00NTAwLWExZDQtYWIyOGE3ODJkYWYwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDg2L3JlYWxtcy9yZWFsbS10ZXN0Iiwic3ViIjoiMjVlMzA4ODgtZmM4NS00Mzk5LTgyNDgtYjcwZTAxMTQyMTNmIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2xpZW50LXRlc3QiLCJzZXNzaW9uX3N0YXRlIjoiMzEyZTExMzgtOWUzMS00YTQzLWI4YmQtZDhjODVmM2I4MzU5IiwiYWNyIjoiMSIsInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6IjMxMmUxMTM4LTllMzEtNGE0My1iOGJkLWQ4Yzg1ZjNiODM1OSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGVzMjM0aXRvIHBlc3BmZGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJjaGFtZmxlOUBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoicGVzMjM0aXRvIiwiZmFtaWx5X25hbWUiOiJwZXNwZmRlIiwiZW1haWwiOiJjaGFtZmxlOUBnbWFpbC5jb20ifQ.GNUyCHVBlKA7QcsL4CkjFwH8xdgI7P_rFB_On6ncbW5Kqi9hqFxokSLxZWMnlb_q5--vwEOH77H2BCjLBE_BsurFSOHA35JJq_gZqsiqyF_urExJ7Fljs9y_utvmgwQX7h0QIOzTwwpwxgObajkM7YtM-7V992LM1UQ9sBk7CM3PjMNXmqSV1BtGyPcjSkuXapdFRw04m6S_ISKDKJc5In5UveWpt4cNxXQz0IvnmQTEM8vbUluYTo2BW_-AsUHzRwE6qnhvK86zevXb5UPB9-nf6_nwFeZUwwk420iYoplVp1NDwBb5dFPecX0Bpi27yzEF9z6yQ18H21Ebpjg5Ig",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/accounts/1/cards",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"accounts",
+								"1",
+								"cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET BY ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El método es de tipo GET\", () => {\r",
+									"    pm.expect(request.method).eql(\"GET\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La URL de la petición es la esperada\", () => {\r",
+									"    pm.expect(request.url).to.have.string(\"http://localhost:8080/api/accounts/\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Existe la propiedad Content-Type en el encabezado de la respuesta y es igual a 'application/json'\", () => {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tiempo de respuesta menor a 200 ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status igual a '200 OK'\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body de la petición vacío\", function () {\r",
+									"    pm.expect(request.data).to.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta es correcta, tiene body y es un JSON\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");  // Es otra forma de chequear las keys del JSON\r",
+									"});\r",
+									"\r",
+									"const dataRes = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Body de la respuesta no vacío\", function () {\r",
+									"    pm.expect(dataRes).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Respuesta con los atributos esperados\", function () {\r",
+									"    pm.expect(dataRes).to.have.all.keys([\"ID\",\"User\", \"PAN\", \"HolderName\", \"ExpirationDate\", \"CID\"]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tipos de datos de la respuesta\", () => {\r",
+									"    pm.expect(dataRes).to.be.an(\"object\");\r",
+									"    pm.expect(dataRes.ID).to.be.a(\"number\");\r",
+									"    pm.expect(dataRes.User).to.be.a(\"object\");\r",
+									"    pm.expect(dataRes.PAN).to.be.a(\"string\");\r",
+									"    pm.expect(dataRes.HolderName).to.be.a(\"string\");\r",
+									"    pm.expect(dataRes.ExpirationDate).to.be.a(\"string\");\r",
+									"    pm.expect(dataRes.CID).to.be.a(\"string\");\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"El ID obtenido es un número válido mayor a 0\", function () {\r",
+									"    pm.expect(dataRes.ID).to.not.be.NaN;\r",
+									"    pm.expect(dataRes.ID).to.be.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El ID recibido es igual al enviado\", function () {\r",
+									"    const idEnviado = parseInt(request.url.split(\"/\").at(-1));\r",
+									"    pm.expect(dataRes.ID).to.eql(idEnviado);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1WHYzNzAzQVRlSTZycDN2Z2RYeVdzd2M3eEVTSi1QMU03RXlQZTc3UEprIn0.eyJleHAiOjE2Njc5NzUyMjUsImlhdCI6MTY2Nzk3MjIyNSwianRpIjoiYzhjOWFjYTQtOGRkMi00MGMzLThiZGUtNTQyMGMzNDQzMjIxIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDg2L3JlYWxtcy9yZWFsbS10ZXN0Iiwic3ViIjoiMjVlMzA4ODgtZmM4NS00Mzk5LTgyNDgtYjcwZTAxMTQyMTNmIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2xpZW50LXRlc3QiLCJzZXNzaW9uX3N0YXRlIjoiMDBhZmJkMjktNDk2Mi00YmMyLWJkOWQtNGU4Yjg4MjNiN2U3IiwiYWNyIjoiMSIsInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6IjAwYWZiZDI5LTQ5NjItNGJjMi1iZDlkLTRlOGI4ODIzYjdlNyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGVzMjM0aXRvIHBlc3BmZGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJjaGFtZmxlOUBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoicGVzMjM0aXRvIiwiZmFtaWx5X25hbWUiOiJwZXNwZmRlIiwiZW1haWwiOiJjaGFtZmxlOUBnbWFpbC5jb20ifQ.eWbQkRn62WKm9kj4TYfOXg-Gc8Z-yMirNvJzoE9hHrq0ek7hKKb9dWyc7b1Jj2xtK0ohYixQ7OLh7bz2NyCLYcvCO_uzbZ_dgkM0C87T7ntBp0lY1pxumF7Yf9BZLfWSyLtx9kTUeVsvA3P3jsEV7vRG-D_4R7pDYfBeo7tbWEvWcGih2WtE4D1lAgIZKolekyxODfdTeZxkd_iAybN-vAoQ5jTaPHjsHZoCMRAhSn3UgWM9reuGZ6MaztOHC3wK0bviO-xsUD80QR3sGPhg3V1-_36fUwJB06lMmDwhGf3virt5T0rskYv5XqHuW3KNxXuX7rB0hbp0y25cfhIEXA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/accounts/1/cards/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"accounts",
+								"1",
+								"cards",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE BY ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El método es de tipo DELETE\", () => {\r",
+									"    pm.expect(request.method).eql(\"DELETE\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La URL de la petición es la esperada\", () => {\r",
+									"    pm.expect(request.url).to.have.string(\"http://localhost:8080/api/accounts\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Existe la propiedad Content-Type en el encabezado de la respuesta y es igual a 'application/json'\", () => {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tiempo de respuesta menor a 200 ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status igual a '200 OK'\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body de la petición vacío\", function () {\r",
+									"    pm.expect(request.data).to.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta es correcta, tiene body y es un JSON\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");      // Es otra forma de chequear las keys del JSON\r",
+									"});\r",
+									"\r",
+									"const dataRes = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Body de la respuesta no vacío\", function () {\r",
+									"    pm.expect(dataRes).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tipos de datos de la respuesta\", () => {\r",
+									" \r",
+									"    pm.expect(dataRes).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mensaje con texto 'OK'\", function () {\r",
+									"    pm.expect(dataRes).to.have.string('OK');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1WHYzNzAzQVRlSTZycDN2Z2RYeVdzd2M3eEVTSi1QMU03RXlQZTc3UEprIn0.eyJleHAiOjE2Njc5NzUyMjUsImlhdCI6MTY2Nzk3MjIyNSwianRpIjoiYzhjOWFjYTQtOGRkMi00MGMzLThiZGUtNTQyMGMzNDQzMjIxIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDg2L3JlYWxtcy9yZWFsbS10ZXN0Iiwic3ViIjoiMjVlMzA4ODgtZmM4NS00Mzk5LTgyNDgtYjcwZTAxMTQyMTNmIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2xpZW50LXRlc3QiLCJzZXNzaW9uX3N0YXRlIjoiMDBhZmJkMjktNDk2Mi00YmMyLWJkOWQtNGU4Yjg4MjNiN2U3IiwiYWNyIjoiMSIsInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6IjAwYWZiZDI5LTQ5NjItNGJjMi1iZDlkLTRlOGI4ODIzYjdlNyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGVzMjM0aXRvIHBlc3BmZGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJjaGFtZmxlOUBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoicGVzMjM0aXRvIiwiZmFtaWx5X25hbWUiOiJwZXNwZmRlIiwiZW1haWwiOiJjaGFtZmxlOUBnbWFpbC5jb20ifQ.eWbQkRn62WKm9kj4TYfOXg-Gc8Z-yMirNvJzoE9hHrq0ek7hKKb9dWyc7b1Jj2xtK0ohYixQ7OLh7bz2NyCLYcvCO_uzbZ_dgkM0C87T7ntBp0lY1pxumF7Yf9BZLfWSyLtx9kTUeVsvA3P3jsEV7vRG-D_4R7pDYfBeo7tbWEvWcGih2WtE4D1lAgIZKolekyxODfdTeZxkd_iAybN-vAoQ5jTaPHjsHZoCMRAhSn3UgWM9reuGZ6MaztOHC3wK0bviO-xsUD80QR3sGPhg3V1-_36fUwJB06lMmDwhGf3virt5T0rskYv5XqHuW3KNxXuX7rB0hbp0y25cfhIEXA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/accounts/1/cards/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"accounts",
+								"1",
+								"cards",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Accounts",
+			"item": [
+				{
+					"name": "GET BY ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El método es de tipo GET\", () => {\r",
+									"    pm.expect(request.method).eql(\"GET\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La URL de la petición es la esperada\", () => {\r",
+									"    pm.expect(request.url).to.have.string(\"http://localhost:8080/api/accounts/\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Existe la propiedad Content-Type en el encabezado de la respuesta y es igual a 'application/json'\", () => {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tiempo de respuesta menor a 200 ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status igual a '200 OK'\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body de la petición vacío\", function () {\r",
+									"    pm.expect(request.data).to.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta es correcta, tiene body y es un JSON\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");  // Es otra forma de chequear las keys del JSON\r",
+									"});\r",
+									"\r",
+									"const dataRes = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Body de la respuesta no vacío\", function () {\r",
+									"    pm.expect(dataRes).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Respuesta con los atributos esperados\", function () {\r",
+									"    pm.expect(dataRes).to.have.all.keys([\"user_id\",\"account_id\", \"cvu\", \"alias\", \"balance\"]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tipos de datos de la respuesta\", () => {\r",
+									"    pm.expect(dataRes).to.be.an(\"object\");\r",
+									"    pm.expect(dataRes.user_id).to.be.a(\"number\");\r",
+									"    pm.expect(dataRes.account_id).to.be.a(\"number\");\r",
+									"    pm.expect(dataRes.cvu).to.be.a(\"string\");\r",
+									"    pm.expect(dataRes.alias).to.be.a(\"string\");\r",
+									"    pm.expect(dataRes.balance).to.be.a(\"string\");\r",
+									"\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"El user id y el account id obtenidos son números válidos mayores a 0\", function () {\r",
+									"    pm.expect(dataRes.user_id).to.not.be.NaN;\r",
+									"    pm.expect(dataRes.user_id).to.be.above(0);  \r",
+									"    pm.expect(dataRes.account_id).to.not.be.NaN;\r",
+									"    pm.expect(dataRes.account_id).to.be.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El ID recibido es igual al enviado\", function () {\r",
+									"    const idEnviado = parseInt(request.url.split(\"/\").at(-1));\r",
+									"    pm.expect(dataRes.account_id).to.eql(idEnviado);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1WHYzNzAzQVRlSTZycDN2Z2RYeVdzd2M3eEVTSi1QMU03RXlQZTc3UEprIn0.eyJleHAiOjE2Njc5NzgyNjUsImlhdCI6MTY2Nzk3NTI2NSwianRpIjoiZTcyMTdjMGItMTcwMC00NTAwLWExZDQtYWIyOGE3ODJkYWYwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDg2L3JlYWxtcy9yZWFsbS10ZXN0Iiwic3ViIjoiMjVlMzA4ODgtZmM4NS00Mzk5LTgyNDgtYjcwZTAxMTQyMTNmIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2xpZW50LXRlc3QiLCJzZXNzaW9uX3N0YXRlIjoiMzEyZTExMzgtOWUzMS00YTQzLWI4YmQtZDhjODVmM2I4MzU5IiwiYWNyIjoiMSIsInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6IjMxMmUxMTM4LTllMzEtNGE0My1iOGJkLWQ4Yzg1ZjNiODM1OSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGVzMjM0aXRvIHBlc3BmZGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJjaGFtZmxlOUBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoicGVzMjM0aXRvIiwiZmFtaWx5X25hbWUiOiJwZXNwZmRlIiwiZW1haWwiOiJjaGFtZmxlOUBnbWFpbC5jb20ifQ.GNUyCHVBlKA7QcsL4CkjFwH8xdgI7P_rFB_On6ncbW5Kqi9hqFxokSLxZWMnlb_q5--vwEOH77H2BCjLBE_BsurFSOHA35JJq_gZqsiqyF_urExJ7Fljs9y_utvmgwQX7h0QIOzTwwpwxgObajkM7YtM-7V992LM1UQ9sBk7CM3PjMNXmqSV1BtGyPcjSkuXapdFRw04m6S_ISKDKJc5In5UveWpt4cNxXQz0IvnmQTEM8vbUluYTo2BW_-AsUHzRwE6qnhvK86zevXb5UPB9-nf6_nwFeZUwwk420iYoplVp1NDwBb5dFPecX0Bpi27yzEF9z6yQ18H21Ebpjg5Ig",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1WHYzNzAzQVRlSTZycDN2Z2RYeVdzd2M3eEVTSi1QMU03RXlQZTc3UEprIn0.eyJleHAiOjE2Njc5NjkwOTksImlhdCI6MTY2Nzk2ODE5OSwianRpIjoiZmM4OWZhY2YtMGRjNi00ZTIyLWE0YWEtM2RlOTcxZGFmNzg4IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDg2L3JlYWxtcy9yZWFsbS10ZXN0Iiwic3ViIjoiMjVlMzA4ODgtZmM4NS00Mzk5LTgyNDgtYjcwZTAxMTQyMTNmIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2xpZW50LXRlc3QiLCJzZXNzaW9uX3N0YXRlIjoiNjIwODdmNTYtMDZjZC00YWJmLThhMDQtYjJhZTkwZDVjNGU5IiwiYWNyIjoiMSIsInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6IjYyMDg3ZjU2LTA2Y2QtNGFiZi04YTA0LWIyYWU5MGQ1YzRlOSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGVzMjM0aXRvIHBlc3BmZGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJjaGFtZmxlOUBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoicGVzMjM0aXRvIiwiZmFtaWx5X25hbWUiOiJwZXNwZmRlIiwiZW1haWwiOiJjaGFtZmxlOUBnbWFpbC5jb20ifQ.Rk15p0SALfXcOnlvhGCqizhAweFQbu4vRbdlaOFylbaC2yM9TTAjAjVdxqs6Cdx3Se_1Lx57Budu5LX4Mb-Ac7jnwg3kCE9MX0hP7-ZKZzGiezBauAr_IpEvoo1R10PvlErsI0rq3PnQen0H1f8hLgjMOLs9wUFdfUASi8wc9KeNhS8-cvC-nh493AUKV9xPy3Gol-Seix30KMvpH7VONXfZw-ZiVvhIqkfBdreMNIi2YmbUQfddfY17ZvLEPOWhoO_zSAZeBlacXbR0B0pQlU530zOGcfS9qnzhdJZhq5gGIWMlvXeJmse1p_bOrPIZCSvMr47dLLkydrkq4Xb-nQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/accounts/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"accounts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET TRANSACTIONS BY ACC ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El método es de tipo GET\", () => {\r",
+									"    pm.expect(request.method).eql(\"GET\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La URL de la petición es la esperada\", () => {\r",
+									"    pm.expect(request.url).to.have.string(\"http://localhost:8080/api/accounts/\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Existe la propiedad Content-Type en el encabezado de la respuesta y es igual a 'application/json'\", () => {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tiempo de respuesta menor a 200 ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status igual a '200 OK'\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body de la petición vacío\", function () {\r",
+									"    pm.expect(request.data).to.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta es correcta, tiene body y es un JSON\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");  // Es otra forma de chequear las keys del JSON\r",
+									"});\r",
+									"\r",
+									"const dataRes = pm.response.json();\r",
+									"\r",
+									"\r",
+									"pm.test(\"Respuesta es un array\", function () {\r",
+									"    pm.expect(dataRes).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El maximo numero de transacciones disponibles son 5\", function () {\r",
+									"    pm.expect(dataRes).to.have.lengthOf.lessThan(6);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1WHYzNzAzQVRlSTZycDN2Z2RYeVdzd2M3eEVTSi1QMU03RXlQZTc3UEprIn0.eyJleHAiOjE2Njc5NzgyNjUsImlhdCI6MTY2Nzk3NTI2NSwianRpIjoiZTcyMTdjMGItMTcwMC00NTAwLWExZDQtYWIyOGE3ODJkYWYwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDg2L3JlYWxtcy9yZWFsbS10ZXN0Iiwic3ViIjoiMjVlMzA4ODgtZmM4NS00Mzk5LTgyNDgtYjcwZTAxMTQyMTNmIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2xpZW50LXRlc3QiLCJzZXNzaW9uX3N0YXRlIjoiMzEyZTExMzgtOWUzMS00YTQzLWI4YmQtZDhjODVmM2I4MzU5IiwiYWNyIjoiMSIsInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6IjMxMmUxMTM4LTllMzEtNGE0My1iOGJkLWQ4Yzg1ZjNiODM1OSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGVzMjM0aXRvIHBlc3BmZGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJjaGFtZmxlOUBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoicGVzMjM0aXRvIiwiZmFtaWx5X25hbWUiOiJwZXNwZmRlIiwiZW1haWwiOiJjaGFtZmxlOUBnbWFpbC5jb20ifQ.GNUyCHVBlKA7QcsL4CkjFwH8xdgI7P_rFB_On6ncbW5Kqi9hqFxokSLxZWMnlb_q5--vwEOH77H2BCjLBE_BsurFSOHA35JJq_gZqsiqyF_urExJ7Fljs9y_utvmgwQX7h0QIOzTwwpwxgObajkM7YtM-7V992LM1UQ9sBk7CM3PjMNXmqSV1BtGyPcjSkuXapdFRw04m6S_ISKDKJc5In5UveWpt4cNxXQz0IvnmQTEM8vbUluYTo2BW_-AsUHzRwE6qnhvK86zevXb5UPB9-nf6_nwFeZUwwk420iYoplVp1NDwBb5dFPecX0Bpi27yzEF9z6yQ18H21Ebpjg5Ig",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/accounts/1/transactions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"accounts",
+								"1",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CHANGE ALIAS BY ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El método es de tipo PATCH\", () => {\r",
+									"    pm.expect(request.method).eql(\"PATCH\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La URL de la petición es la esperada\", () => {\r",
+									"  pm.expect(request.url).to.have.string(\"http://localhost:8080/api/accounts\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Existe la propiedad Content-Type en el encabezado de la petición y es igual a 'application/json'\", () => {\r",
+									"    pm.expect(request.headers).to.have.property(\"content-type\");\r",
+									"    pm.expect(request.headers['content-type']).to.eql('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Existe la propiedad Content-Type en el encabezado de la respuesta y es igual a 'application/json'\", () => {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tiempo de respuesta menor a 200 ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status igual a '200 OK'\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"\r",
+									"const dataReq = JSON.parse(request.data);\r",
+									"\r",
+									"pm.test(\"Petición con los atributos esperados\", function () {\r",
+									"    pm.expect(dataReq).to.not.have.any.keys(\"id\");\r",
+									"    pm.expect(dataReq).to.have.all.keys([\"alias\"]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tipos de datos de la petición\", () => {\r",
+									"    pm.expect(dataReq).to.be.an(\"object\");\r",
+									"    pm.expect(dataReq).to.not.have.property(\"id\");\r",
+									"    pm.expect(dataReq.alias).to.be.a(\"string\");\r",
+									" \r",
+									"\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"La respuesta es correcta, tiene body y es un JSON\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");  // Es otra forma de chequear las keys del JSON\r",
+									"});\r",
+									"\r",
+									"const dataRes = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Body de la respuesta no vacío\", function () {\r",
+									"    pm.expect(dataRes).to.not.be.empty;\r",
+									"});\r",
+									"pm.test(\"Tipos de datos de la respuesta\", () => {\r",
+									" \r",
+									"    pm.expect(dataRes).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mensaje con texto 'OK'\", function () {\r",
+									"    pm.expect(dataRes).to.have.string('OK');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1WHYzNzAzQVRlSTZycDN2Z2RYeVdzd2M3eEVTSi1QMU03RXlQZTc3UEprIn0.eyJleHAiOjE2Njc5NzgyNjUsImlhdCI6MTY2Nzk3NTI2NSwianRpIjoiZTcyMTdjMGItMTcwMC00NTAwLWExZDQtYWIyOGE3ODJkYWYwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDg2L3JlYWxtcy9yZWFsbS10ZXN0Iiwic3ViIjoiMjVlMzA4ODgtZmM4NS00Mzk5LTgyNDgtYjcwZTAxMTQyMTNmIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2xpZW50LXRlc3QiLCJzZXNzaW9uX3N0YXRlIjoiMzEyZTExMzgtOWUzMS00YTQzLWI4YmQtZDhjODVmM2I4MzU5IiwiYWNyIjoiMSIsInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6IjMxMmUxMTM4LTllMzEtNGE0My1iOGJkLWQ4Yzg1ZjNiODM1OSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGVzMjM0aXRvIHBlc3BmZGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJjaGFtZmxlOUBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoicGVzMjM0aXRvIiwiZmFtaWx5X25hbWUiOiJwZXNwZmRlIiwiZW1haWwiOiJjaGFtZmxlOUBnbWFpbC5jb20ifQ.GNUyCHVBlKA7QcsL4CkjFwH8xdgI7P_rFB_On6ncbW5Kqi9hqFxokSLxZWMnlb_q5--vwEOH77H2BCjLBE_BsurFSOHA35JJq_gZqsiqyF_urExJ7Fljs9y_utvmgwQX7h0QIOzTwwpwxgObajkM7YtM-7V992LM1UQ9sBk7CM3PjMNXmqSV1BtGyPcjSkuXapdFRw04m6S_ISKDKJc5In5UveWpt4cNxXQz0IvnmQTEM8vbUluYTo2BW_-AsUHzRwE6qnhvK86zevXb5UPB9-nf6_nwFeZUwwk420iYoplVp1NDwBb5dFPecX0Bpi27yzEF9z6yQ18H21Ebpjg5Ig",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"alias\": \"aliAaA4\"\r\n   \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/accounts/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"accounts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

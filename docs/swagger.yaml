@@ -1,0 +1,558 @@
+basePath: /api
+definitions:
+  domain.AccountInfo:
+    properties:
+      account_id:
+        type: integer
+      alias:
+        type: string
+      balance:
+        type: number
+      cvu:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  domain.Card:
+    properties:
+      account_id:
+        type: integer
+      card_id:
+        type: integer
+      cvv:
+        type: string
+      expiration_date:
+        type: string
+      holder_name:
+        type: string
+      pan:
+        type: string
+      type:
+        type: string
+    type: object
+  domain.CardDto:
+    properties:
+      cvv:
+        type: string
+      expiration_date:
+        type: string
+      holder_name:
+        type: string
+      pan:
+        type: string
+      type:
+        type: string
+    type: object
+  domain.ForgotRequest:
+    properties:
+      email:
+        type: string
+    type: object
+  domain.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  domain.LoginResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  domain.RegisterRequest:
+    properties:
+      dni:
+        type: integer
+      email:
+        type: string
+      last_name:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      phone:
+        type: integer
+    type: object
+  domain.TransactionInfo:
+    properties:
+      account_id:
+        type: integer
+      amount:
+        type: number
+      date_time:
+        type: string
+      description:
+        type: string
+      destination_cvu:
+        type: string
+      origin_cvu:
+        type: string
+      transaction_id:
+        type: integer
+      type:
+        type: string
+    type: object
+  domain.UserInfo:
+    properties:
+      dni:
+        type: integer
+      email:
+        type: string
+      last_name:
+        type: string
+      name:
+        type: string
+      phone:
+        type: integer
+    type: object
+  users.UserDto:
+    properties:
+      alias:
+        type: string
+      cvu:
+        type: string
+      dni:
+        type: integer
+      email:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      name:
+        type: string
+      phone:
+        type: integer
+    type: object
+info:
+  contact:
+    email: support@swagger.io
+    name: Grupo 4
+    url: http://www.swagger.io/support
+  description: Project develop for group 4 CTD backend specialist.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Grupo 4 Swagger
+  version: "1.0"
+paths:
+  /accounts/{accountID}:
+    get:
+      consumes:
+      - application/json
+      description: Get account info
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: accountID
+        in: path
+        name: accountID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.AccountInfo'
+        "500":
+          description: Internal error
+          schema:
+            type: string
+      summary: Get account info
+      tags:
+      - accounts
+    patch:
+      consumes:
+      - application/json
+      description: Change alias account info
+      parameters:
+      - description: accountID
+        in: path
+        name: accountID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Ok
+          schema:
+            type: string
+        "400":
+          description: invalid id, Bad json, Required field or Alias already in use
+          schema:
+            type: string
+        "500":
+          description: Internal error
+          schema:
+            type: string
+      summary: Change alias account info
+      tags:
+      - accounts
+  /accounts/{accountID}/cards:
+    get:
+      consumes:
+      - application/json
+      description: Get all cards
+      parameters:
+      - description: accountID
+        in: path
+        name: accountID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Card'
+            type: array
+        "400":
+          description: invalid account id
+          schema:
+            type: string
+        "500":
+          description: Internal error
+          schema:
+            type: string
+      summary: Get all cards
+      tags:
+      - card
+    post:
+      consumes:
+      - application/json
+      description: New card
+      parameters:
+      - description: accountID
+        in: path
+        name: accountID
+        required: true
+        type: integer
+      - description: NewCard
+        in: body
+        name: NewCard
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CardDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Ok
+          schema:
+            type: string
+        "400":
+          description: invalid id, bad json, Required fields, Card already associated
+            to another account
+          schema:
+            type: string
+        "500":
+          description: Internal error
+          schema:
+            type: string
+      summary: Create a new card
+      tags:
+      - card
+  /accounts/{accountID}/cards/{cardID}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete card by id
+      parameters:
+      - description: accountID
+        in: path
+        name: accountID
+        required: true
+        type: integer
+      - description: cardID
+        in: path
+        name: cardID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: invalid card id
+          schema:
+            type: string
+        "404":
+          description: Card not found
+          schema:
+            type: string
+        "500":
+          description: Internal error
+          schema:
+            type: string
+      summary: Delete card by id
+      tags:
+      - card
+    get:
+      consumes:
+      - application/json
+      description: Get card by id
+      parameters:
+      - description: accountID
+        in: path
+        name: accountID
+        required: true
+        type: integer
+      - description: cardID
+        in: path
+        name: cardID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Card'
+        "400":
+          description: invalid account id, invalid card id
+          schema:
+            type: string
+        "404":
+          description: Card not found
+          schema:
+            type: string
+        "500":
+          description: Internal error
+          schema:
+            type: string
+      summary: Get card by id
+      tags:
+      - card
+  /accounts/{accountID}/transactions:
+    get:
+      consumes:
+      - application/json
+      description: Get last five transactions info
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: accountID
+        in: path
+        name: accountID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.TransactionInfo'
+            type: array
+        "400":
+          description: invalid id
+          schema:
+            type: string
+        "500":
+          description: Internal error
+          schema:
+            type: string
+      summary: Get last five transactions info
+      tags:
+      - transactions
+  /users/:
+    post:
+      consumes:
+      - application/json
+      description: New users registration
+      parameters:
+      - description: RegisterRequest
+        in: body
+        name: RegisterRequest
+        required: true
+        schema:
+          $ref: '#/definitions/domain.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/users.UserDto'
+        "400":
+          description: Bad json, Requiered fields or Email already registered
+          schema:
+            type: string
+        "500":
+          description: Internal error
+          schema:
+            type: string
+      summary: Create a new users
+      tags:
+      - auth
+  /users/{accountID}:
+    patch:
+      consumes:
+      - application/json
+      description: Update user info
+      parameters:
+      - description: accountID
+        in: path
+        name: accountID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Ok
+          schema:
+            type: string
+        "400":
+          description: invalid id, Bad json, Email already registered
+          schema:
+            type: string
+        "500":
+          description: Internal error
+          schema:
+            type: string
+      summary: Update user info
+      tags:
+      - users
+  /users/{userID}:
+    get:
+      consumes:
+      - application/json
+      description: Get users info
+      parameters:
+      - description: userID
+        in: path
+        name: userID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.UserInfo'
+        "400":
+          description: invalid id
+          schema:
+            type: string
+        "500":
+          description: Internal error
+          schema:
+            type: string
+      summary: Get users info
+      tags:
+      - users
+  /users/forgot:
+    post:
+      consumes:
+      - application/json
+      description: user forgot credentials
+      parameters:
+      - description: ForgotRequest
+        in: body
+        name: ForgotRequest
+        required: true
+        schema:
+          $ref: '#/definitions/domain.ForgotRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal error
+          schema:
+            type: string
+      summary: Recover password through email
+      tags:
+      - auth
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: user login
+      parameters:
+      - description: LoginRequest
+        in: body
+        name: LoginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/domain.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.LoginResponse'
+        "400":
+          description: All fields are required or Invalid user credentials
+          schema:
+            type: string
+        "401":
+          description: Email not verified
+          schema:
+            type: string
+        "404":
+          description: User not exists
+          schema:
+            type: string
+        "500":
+          description: Internal error
+          schema:
+            type: string
+      summary: Login session
+      tags:
+      - auth
+  /users/logout:
+    get:
+      consumes:
+      - application/json
+      description: user logout
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "500":
+          description: Internal error
+          schema:
+            type: string
+      summary: Logout session
+      tags:
+      - auth
+swagger: "2.0"
